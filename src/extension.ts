@@ -2,6 +2,10 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 
+function isEmptyOrSpaces(str:string){
+    return str === null || str.match(/^ *$/) !== null;
+}
+
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -127,6 +131,41 @@ export function activate(context: vscode.ExtensionContext) {
 			// console.info(items.map(it => {
 			// 	return Object.values(it).toString()
 			// }).join('\n'));
+		}
+		// Display a message box to the user
+
+	});
+
+	context.subscriptions.push(disposable);
+
+	disposable = vscode.commands.registerCommand('oneblue.removeEmptyLine', () => {
+		// The code you place here will be executed every time your command is executed
+		const editor = vscode.window.activeTextEditor;
+
+		if (editor) {
+			const document = editor.document;
+			const selection = editor.selection;
+			const word = document.getText(selection);
+
+			let warningMessage = '';
+
+			let output = ''
+			
+			for (const line of word.split('\n')) {
+				if(!isEmptyOrSpaces(line)){
+					output += line;
+					output += '\n';
+				}
+			}
+
+			if (warningMessage) {
+				vscode.window.showInformationMessage(warningMessage);
+				console.error(warningMessage);
+			}else{
+				editor.edit(editBuilder => {
+					editBuilder.replace(selection, output);
+				})
+			}
 		}
 		// Display a message box to the user
 
