@@ -21,6 +21,10 @@
       }
     ]
   },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:longnlp/OneBlueCodeExtension.git"
+  },
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
